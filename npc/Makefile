@@ -31,7 +31,6 @@ LIBREADLINE := $(shell find / -name "libreadline.so" 2>/dev/null)
 INCLUDE 	:= $(addprefix -I, $(IDIR))
 VERILATOR 	:= verilator
 CFLAGS  	:= -I $(INCLUDE)
-VERILATOR_FLAGS := --cc --exe --build --trace
 NPC_ARGS 	:= $(VERILATOR) $(CFLAGS) --top-module $(TOP_NAME) $(VERILATOR_FLAGS) $(VSRC) $(CSRC) $(LIBREADLINE)
 IMG 		?= ins.txt
 IMG_DIR 	:= $(abspath ./inst/$(notdir $(IMG)))
