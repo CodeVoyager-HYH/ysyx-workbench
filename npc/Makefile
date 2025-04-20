@@ -60,8 +60,8 @@ sim:
 	@echo "$(COLOR_RED)[riscv32-npc] $(COLOR_NONE)"
 	rm -rf $(NPC_HOME)/obj_dir
 	rm -rf $(NPC_HOME)/wave.vcd
-	@echo "$(COLOR_BLUE)[CSRS-编译目录] $(COLOR_NONE) $(CSRC)
-	@echo "$(COLOR_BLUE)[VSRS-编译目录] $(COLOR_NONE) $(VSRC)	
+	@echo "$(COLOR_BLUE)[CSRS-编译目录] $(COLOR_NONE) $(CSRC)"
+	@echo "$(COLOR_BLUE)[VSRS-编译目录] $(COLOR_NONE) $(VSRC)"
 	@echo "$(COLOR_GREEN)[编译命令] $(COLOR_NONE) $(NPC_ARGS)"
 	$(NPC_ARGS) 
 	$(OBJ_DIR)
@@ -72,8 +72,8 @@ run:
 	@echo "$(COLOR_RED)[riscv32-npc] $(COLOR_NONE)"
 	rm -rf $(NPC_HOME)/obj_dir
 	rm -rf $(NPC_HOME)/wave.vcd
-	@echo "$(COLOR_BLUE)[CSRS-编译目录] $(COLOR_NONE) $(CSRC)
-	@echo "$(COLOR_BLUE)[VSRS-编译目录] $(COLOR_NONE) $(VSRC)	
+	@echo "$(COLOR_BLUE)[CSRS-编译目录] $(COLOR_NONE) $(CSRC)"
+	@echo "$(COLOR_BLUE)[VSRS-编译目录] $(COLOR_NONE) $(VSRC)"	
 	@echo "$(COLOR_GREEN)[编译命令] $(COLOR_NONE) $(NPC_ARGS)"
 	$(NPC_ARGS) 
 	$(OBJ_DIR)
