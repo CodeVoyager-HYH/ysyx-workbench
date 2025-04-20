@@ -30,8 +30,8 @@ LIBREADLINE := $(shell find / -name "libreadline.so" 2>/dev/null)
 # 编译
 INCLUDE 	:= $(addprefix -I, $(IDIR))
 VERILATOR 	:= verilator
-CFLAGS  	:= -I $(INCLUDE)
-NPC_ARGS 	:= $(VERILATOR) --cc --exe $(CFLAGS) --top-module $(TOP_NAME) $(VERILATOR_FLAGS) $(VSRC) $(CSRC) $(LIBREADLINE)
+CFLAGS  	:= -cc --exe -I $(INCLUDE)
+NPC_ARGS 	:= $(VERILATOR) $(CFLAGS) --top-module $(TOP_NAME) $(VERILATOR_FLAGS) $(VSRC) $(CSRC) $(LIBREADLINE)
 IMG 		?= ins.txt
 IMG_DIR 	:= $(abspath ./inst/$(notdir $(IMG)))
 OBJ_DIR 	:= make -C $(NPC_HOME)/obj_dir -f  VCPU.mk  VCPU
