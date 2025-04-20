@@ -27,13 +27,8 @@ config ISA64
   bool
   default y
 
-
-if ISA_riscv
-source "csrc/isa/riscv32/Kconfig"
-endif
-
 choice
-  prompt "NPC execution engine"
+  prompt "NEMU execution engine"
   default ENGINE_INTERPRETER
 
 config ENGINE_INTERPRETER
@@ -138,6 +133,10 @@ config DTRACE
   bool "Enable dtrace"
   default n
 
+config ETRACE
+  bool "Enable etrace"
+  default n
+  
   config IRINGBUF
   bool "Enable iringbuf"
   default y
@@ -146,6 +145,10 @@ config TRACE
   bool "Enable tracer"
   default y
 
+config NPC_OPEN_SIM
+  bool "Enable wave"
+  default y
+  
 config TRACE_START
   depends on TRACE
   int "When tracing is enabled (unit: number of instructions)"
@@ -155,10 +158,6 @@ config TRACE_END
   depends on TRACE
   int "When tracing is disabled (unit: number of instructions)"
   default 10000
-
-config WAVE_TRACE
-  bool "Enable wave tracer"
-  default y
 
 config ITRACE
   depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
@@ -181,12 +180,7 @@ config DIFFTEST
   default n
   help
     Enable differential testing with a reference design.
-    Note that this will significantly reduce the performance of NPC.
-
-config DIFFTEST_RUN
-  depends on DIFFTEST
-  bool "Enable run"
-  default n
+    Note that this will significantly reduce the performance of NEMU.
 
 choice
   prompt "Reference design"
@@ -220,12 +214,6 @@ config DIFFTEST_REF_NAME
   default "spike" if DIFFTEST_REF_SPIKE
   default "none"
 endmenu
-
-if MODE_SYSTEM
-source "csrc/memory/Kconfig"
-source "csrc/device/Kconfig"
-endif
-
 
 menu "Miscellaneous"
 choice
