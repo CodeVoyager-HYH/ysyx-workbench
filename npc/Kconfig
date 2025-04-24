@@ -137,7 +137,7 @@ config ETRACE
   bool "Enable etrace"
   default n
   
-  config IRINGBUF
+config IRINGBUF
   bool "Enable iringbuf"
   default y
 
@@ -157,7 +157,7 @@ config TRACE_START
 config TRACE_END
   depends on TRACE
   int "When tracing is disabled (unit: number of instructions)"
-  default 10000
+  default 1000
 
 config ITRACE
   depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
@@ -168,6 +168,10 @@ config FTRACE
   bool "Enable ftrace"
   default n
 
+config PRINT_INST
+  bool "Print instruction disassembly"  
+  default y
+  
 config ITRACE_COND
   depends on ITRACE
   string "Only trace instructions when the condition is true"
@@ -230,4 +234,44 @@ config RT_CHECK
   bool "Enable runtime checking"
   default y
 
+endmenu
+
+menu "Base option"
+
+config MSIZE
+    hex
+    default 0x08000000
+
+config RTC_MMIO
+    hex
+    default 0xa0000048
+
+config PC_RESET_OFFSET
+    hex
+    default 0x0
+
+config MEM_RANDOM
+    bool
+    default y
+
+config MBASE
+    hex
+    default 0x80000000
+
+config SERIAL_MMIO
+    hex
+    default 0xa00003f8
+
+config PMEM_GARRAY
+    bool
+    default y
+
+config MULTI_CYCLE
+    bool "Multi-core processor"
+    default n
+
+config PIPELINE
+    bool "pipeline-core processor"
+    default y
+    
 endmenu
