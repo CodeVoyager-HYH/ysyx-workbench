@@ -73,7 +73,7 @@ sim:
 	$(NPC_ARGS) 
 	$(OBJ_DIR)
 	$(OBJDIR)/VCPU $(ARGS)  $(IMG)	
-	gtkwave waveform.vcd
+#	gtkwave waveform.vcd
 
 run: 
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
