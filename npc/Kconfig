@@ -238,6 +238,7 @@ endmenu
 
 menu "Base option"
 
+#=====================================================
 config MSIZE
     hex
     default 0x08000000
@@ -262,6 +263,124 @@ config SERIAL_MMIO
     hex
     default 0xa00003f8
 
+#soc
+  #CLINT
+config CLINT_BASE	
+    hex
+    default 0x02000000
+
+config CLINT_BOUND
+    hex
+    default 0x0200ffff    
+
+  #SRAM
+config SRAM
+  hex
+  default 0x0f000000  
+  
+config SRAM_BOUND
+  hex
+  default 0x0fffffff 
+
+  #UART
+config UART
+  hex
+  default 0x10000000
+
+config UART_BOUND
+  hex
+  default 0x10000fff
+
+  #SPI master
+config SPI_MASTER
+  hex
+  default 0x10001000
+
+config SPI_MASTER_BOUND
+  hex
+  default 0x10001fff
+
+  #GPIO
+config GPIO
+  hex
+  default 0x10002000
+
+config GPIO_BOUND
+  hex
+  default 0x1000200f  
+
+  #PS2
+config PS2
+  hex 
+  default 0x10011000
+
+config PS2_BOUND
+  hex
+  default 0x10011000  
+
+  #MROM
+config MROM
+  hex
+  default 0x20000000
+
+config MROM_BOUND
+  hex
+  default 0x20000fff
+
+  #VGA
+config VGA
+  hex
+  default 0x21000000
+
+config VGA_BOUND
+  hex
+  default 0x211fffff  
+
+  #FLASH
+config FLASH
+  hex
+  default 0x30000000
+
+config FLASH_BOUND
+  hex
+  default 0x3fffffff
+
+  #ChipLink MMIO
+config CHIPLINK_MMIO
+  hex
+  default 0x40000000
+
+config CHIPLINK_MMIO_BOUND
+  hex
+  default 0x7fffffff
+
+  #PSRAM
+config PSRAM
+  hex 
+  default 0x80000000
+
+config PSRAM_BOUND
+  hex
+  default 0x9fffffff
+
+  #SDRAM
+config SDRAM
+  hex
+  default 0xa0000000
+
+config SDRAM_BOUND
+  hex
+  default 0xbfffffff
+
+  #ChipLink MEM
+config CHIPLINK_MEM
+  hex
+  default 0xc0000000
+
+config CHIPLINK_MEM_BOUND
+  hex
+  default 0xffffffff
+#===========================================================
 config PMEM_GARRAY
     bool
     default y
@@ -273,5 +392,6 @@ config MULTI_CYCLE
 config PIPELINE
     bool "pipeline-core processor"
     default y
+   
     
 endmenu
