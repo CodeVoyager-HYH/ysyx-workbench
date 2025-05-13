@@ -1,0 +1,18 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "vcpu.h": "c",
+        "common.h": "c",
+        "simulator_state.h": "c",
+        "defs.h": "c",
+        "autoconf.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "regex.h": "c",
+        "vysyxsocfull.h": "c",
+        "bitset": "c",
+        "memory": "c",
+        "random": "c"
+    }
+}

@@ -1,0 +1,19 @@
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/utils/log.c:15 init_log] Log is written to /home/hh/ysyx-workbench/npc/build/npc-log.txt[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/memory/memory.c:16 init_mem] physical memory area [0x80000000, 0x87ffffff][0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/memory/memory.c:18 init_mem] Mrom memory area [0x20000000, 0x20000fff][0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:30 load_img] No image is given. Use the default build-in image.[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:110 load_mrom] The image is /home/hh/ysyx-workbench/am-kernels/tests/cpu-tests/build/char-tests-riscv32-npc.bin, size = 140[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:37 npc_open_simulation] NPC open simulation[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:7 welcome] Trace and IRingTrace: [1;32mON[0m[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:8 welcome] MemoryTrace:          [1;31mOFF[0m[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:9 welcome] FuncTrace:            [1;31mOFF[0m[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:10 welcome] DeviceTrace:          [1;31mOFF[0m[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:11 welcome] If ITrace and MemoryTrace is enabled, a log file will be generated to record the trace. This may lead to a large log file. If it is not necessary, you can disable it in menuconfig[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:14 welcome] Build time: 19:25:28, May 13 2025[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:152 cpu_exec] SIM: [1;32mHIT GOOD TRAP[0m at pc = 0x00000000[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:42 npc_close_simulation] NPC close simulation[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:121 statistic] host time spent = 108 us[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:122 statistic] total guest instructions = 0[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:124 statistic] simulation frequency = 0 inst/s[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:42 npc_close_simulation] NPC close simulation[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/sdb/sdb.c:82 cmd_q] NPC close simulation[0m
