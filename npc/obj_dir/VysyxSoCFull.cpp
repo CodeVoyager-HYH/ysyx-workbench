@@ -32,8 +32,12 @@ VysyxSoCFull::VysyxSoCFull(VerilatedContext* _vcontextp__, const char* _vcname__
     , externalPins_vga_valid{vlSymsp->TOP.externalPins_vga_valid}
     , externalPins_uart_rx{vlSymsp->TOP.externalPins_uart_rx}
     , externalPins_uart_tx{vlSymsp->TOP.externalPins_uart_tx}
+    , commit{vlSymsp->TOP.commit}
     , externalPins_gpio_out{vlSymsp->TOP.externalPins_gpio_out}
     , externalPins_gpio_in{vlSymsp->TOP.externalPins_gpio_in}
+    , cur_pc{vlSymsp->TOP.cur_pc}
+    , commit_pc{vlSymsp->TOP.commit_pc}
+    , commit_pre_pc{vlSymsp->TOP.commit_pre_pc}
     , __PVT____024unit{vlSymsp->TOP.__PVT____024unit}
     , rootp{&(vlSymsp->TOP)}
 {

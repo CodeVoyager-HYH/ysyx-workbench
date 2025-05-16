@@ -48,8 +48,12 @@ class VysyxSoCFull VL_NOT_FINAL : public VerilatedModel {
     VL_OUT8(&externalPins_vga_valid,0,0);
     VL_IN8(&externalPins_uart_rx,0,0);
     VL_OUT8(&externalPins_uart_tx,0,0);
+    VL_OUT8(&commit,0,0);
     VL_OUT16(&externalPins_gpio_out,15,0);
     VL_IN16(&externalPins_gpio_in,15,0);
+    VL_OUT(&cur_pc,31,0);
+    VL_OUT(&commit_pc,31,0);
+    VL_OUT(&commit_pre_pc,31,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.

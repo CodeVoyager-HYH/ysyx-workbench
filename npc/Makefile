@@ -1,8 +1,9 @@
 #可修改选项
 override ARGS ?= --log=$(BUILD_DIR)/npc-log.txt
-override ARGS += --diff=$(NPC_HOME)/diff/riscv32-spike-so
-override ARGS += --mrom=/home/hh/ysyx-workbench/am-kernels/tests/cpu-tests/build/char-tests-riscv32-npc.bin
-#override ARGS += --batch
+# override ARGS += --diff=$(NPC_HOME)/diff/riscv32-spike-so
+override ARGS += --diff=$(NEMU_HOME)/build/riscv32-nemu-interpreter-so
+# override ARGS += --mrom=/home/hh/ysyx-workbench/am-kernels/tests/cpu-tests/build/char-tests-riscv32-npc.bin
+override ARGS += --batch
 
 # 彩色输出
 COLOR_RED   = $(shell tput setaf 1)
@@ -40,7 +41,7 @@ IDIR 		=  $(INC_PATH)
 IDIR		+= $(VDIR)
 IDIR		+= $(OBJDIR)
 IDIR		+= $(SOC_INCLUDE_DIR)
-LIBREADLINE = $(shell find / -name "libreadline.so" 2>/dev/null)
+LIBREADLINE ?= $(shell find / -name "libreadline.so" 2>/dev/null)
 
 LDFLAGS += -lreadline -lhistory -ldl -pie $(shell llvm-config --libs)
 
@@ -48,7 +49,7 @@ LDFLAGS += -lreadline -lhistory -ldl -pie $(shell llvm-config --libs)
 INCLUDE 	= $(addprefix -I, $(IDIR))
 VERILATOR 	= verilator
 CFLAGS  	= -cc --exe $(INCLUDE) --CFLAGS "$(INCLUDE)"
-VERILATOR_FLAGS = --cc --exe --build --trace --timescale "1ns/1ns" --no-timing
+VERILATOR_FLAGS = --cc --exe --build --trace --autoflush --timescale "1ns/1ns" --no-timing
 NPC_ARGS 	= $(VERILATOR) $(CFLAGS) $(INC) $(addprefix -LDFLAGS , $(LDFLAGS)) --top-module $(TOP_NAME) $(VERILATOR_FLAGS) $(VSRC) $(CSRC) $(LIBREADLINE)
 IMG_DIR 	= $(abspath ./inst/$(notdir $(IMG)))
 OBJ_DIR 	= make -C $(NPC_HOME)/obj_dir -f  VysyxSoCFull.mk  VysyxSoCFull

@@ -17,8 +17,8 @@
 #include <cpu/cpu.h>
 #include <difftest-def.h>
 #include <memory/paddr.h>
+#include <memory/soc.h>
 
-extern void isa_reg_display();
 #define REG 32
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
 	
@@ -72,7 +72,7 @@ __EXPORT void difftest_raise_intr(word_t NO) {
 }
 
 __EXPORT void difftest_init(int port) {
-	
+  init_soc();	
   void init_mem();
   init_mem();
   /* Perform ISA dependent initialization. */

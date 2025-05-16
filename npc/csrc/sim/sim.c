@@ -48,21 +48,21 @@ extern uint32_t cpu_mcause;
 extern uint32_t cpu_mepc;
 extern uint32_t * reg_ptr;
 
-// void update_cpu_state(){
-//   cpu.pc = dut.cur_pc;
-//   memcpy(&cpu.gpr[0], reg_ptr, 4 * 32);
-//   cpu.csr[MSTATUS] =  cpu_mstatus;
-//   cpu.csr[MEPC]=   cpu_mepc;
-//   cpu.csr[MCAUSE] = cpu_mcause;
-//   cpu.csr[MTVEC] =  cpu_mtvec;
-// }
+void update_cpu_state(){
+  cpu.pc = dut.cur_pc;
+  memcpy(&cpu.gpr[0], reg_ptr, 4 * 32);
+  cpu.csr[MSTATUS] =  cpu_mstatus;
+  cpu.csr[MEPC]=   cpu_mepc;
+  cpu.csr[MCAUSE] = cpu_mcause;
+  cpu.csr[MTVEC] =  cpu_mtvec;
+}
 void npc_single_cycle() {
   dut.clock = 0;  dut.eval();   
   IFDEF(CONFIG_NPC_OPEN_SIM,   m_trace->dump(sim_time++));
   dut.clock = 1;  dut.eval(); 
   IFDEF(CONFIG_NPC_OPEN_SIM,   m_trace->dump(sim_time++));
   clk_count++;
-  //update_cpu_state();
+  update_cpu_state();
 
 }
 void npc_reset(int n) {
@@ -89,18 +89,18 @@ void execute(uint64_t n){
       //if(sim_state.state == SIM_END) printf("下一条要执行的指令是----![信息待添加]\n");
       break; 
     }
-    //while(dut.commit != 1){
+    while(dut.commit != 1){
       npc_single_cycle();
-    //}
+    }
     
     #ifdef CONFIG_PIPELINE
-    // word_t commit_pc = dut.commit_pc;
-    // commit_pre_pc = dut.commit_pre_pc;
-    // npc_single_cycle();                             //再执行一次,该指令执行完毕.   
-    // update_cpu_state();
+    word_t commit_pc = dut.commit_pc;
+    commit_pre_pc = dut.commit_pre_pc;
+    npc_single_cycle();                             //再执行一次,该指令执行完毕.   
+    update_cpu_state();
 
-    // IFDEF(CONFIG_ITRACE,   instr_trace(commit_pc));
-    // IFDEF(CONFIG_DIFFTEST, difftest_step(commit_pc, commit_pre_pc));  
+    IFDEF(CONFIG_ITRACE,   instr_trace(commit_pc));
+    IFDEF(CONFIG_DIFFTEST, difftest_step(commit_pc, commit_pre_pc));  
     #endif
 
     #ifdef CONFIG_MULTI_CYCLE

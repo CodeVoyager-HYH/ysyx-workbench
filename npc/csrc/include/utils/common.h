@@ -10,13 +10,17 @@
 #include <string.h>
 #include <stdlib.h>
 #include <autoconf.h>
-// #include "/home/hh/ysyx-workbench/npc/include/generated/autoconf.h"
-#define __GUEST_ISA__ riscv32
+//Verilog
+#include "verilated_dpi.h"
+#include <verilated.h>
+#include <verilated_vcd_c.h>
+#include <VysyxSoCFull.h>
 
+#define __GUEST_ISA__ riscv32
 
 //Type
 typedef uint32_t  word_t;
-typedef  int32_t sword_t;
+typedef int32_t  sword_t;
 typedef word_t   vaddr_t;
 typedef word_t   paddr_t;
 //

@@ -1,4 +1,6 @@
+/*程序开始入口*/
 ENTRY(_start)
+/*设置两个段头，代码段和数据段*/
 PHDRS { text PT_LOAD; data PT_LOAD; }
 
 SECTIONS {

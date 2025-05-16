@@ -59,3 +59,6 @@
 `define MROM_BOUND          32'h20000fff
 `define UART                32'h10000000
 `define UART_BOUND          32'h10000fff
+
+//reset
+`define RESET_PC            32'h8000_0000

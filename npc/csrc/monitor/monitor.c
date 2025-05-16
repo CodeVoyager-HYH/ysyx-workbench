@@ -99,9 +99,10 @@ void load_builded_img_and_mrom(){
  memcpy(guest_to_mrom(CONFIG_MROM), mrom_img, sizeof(mrom_img));
 }
 
-static void load_mrom() {
+static long load_mrom() {
   if (mrom_file == NULL) {
     Log("No mrom-image is given. Use the default build-in mrom.");
+    return 0;
   }
   FILE *fp = fopen(mrom_file, "rb");
   Assert(fp, "Can not open '%s'", mrom_file);
@@ -114,11 +115,11 @@ static void load_mrom() {
   assert(ret == 1);
 
   fclose(fp);
+  return size;
 }
 
 //--------------------------------------------------------------------------------------
-
-
+long mrom_size = 0;
 void init_monitor(int argc, char **argv){
   parse_args(argc, argv);
   init_rand();
@@ -126,7 +127,7 @@ void init_monitor(int argc, char **argv){
   init_mem();
   load_builded_img_and_mrom();
   long img_size = load_img();
-  load_mrom();
+  mrom_size = load_mrom();
   npc_init();
   init_difftest(diff_so_file,img_size, difftest_port);
 //  init_trace();

@@ -13,6 +13,21 @@
         "vysyxsocfull.h": "c",
         "bitset": "c",
         "memory": "c",
-        "random": "c"
-    }
+        "random": "c",
+        "npc.h": "c",
+        "riscv.h": "c",
+        "klib-macros.h": "c",
+        "system_error": "c",
+        "deque": "c",
+        "list": "c",
+        "unordered_map": "c",
+        "vector": "c",
+        "initializer_list": "c",
+        "optional": "c"
+    },
+    "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
+        "clang-diagnostic-error",
+        "clang-diagnostic-error",
+        "clang-diagnostic-error"
+    ]
 }

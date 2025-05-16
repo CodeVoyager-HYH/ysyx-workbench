@@ -88,12 +88,12 @@ module ysyx_cpu(
     output wire [1:0]  io_slave_rresp,    // 响应状态
     output wire [31:0] io_slave_rdata,    // 数据
     output wire        io_slave_rlast,    // 最后一个数据包
-    output wire [3:0]  io_slave_rid       // 事务 ID
+    output wire [3:0]  io_slave_rid,       // 事务 ID
     //difftest
-    // output wire [31:0]          cur_pc,
-    //output                      commit
-    // output wire [31:0]          commit_pc,
-    // output wire [31:0]          commit_pre_pc
+    output wire [31:0]          cur_pc,
+    output                      commit,
+    output wire [31:0]          commit_pc,
+    output wire [31:0]          commit_pre_pc
 );
 
 //目前无用
@@ -118,11 +118,15 @@ assign io_slave_rlast    = 1'b0;   // 1-bit
 assign io_slave_rid      = 4'h0;   // 4-bit
 
 //difftest
-wire [31:0] cur_pc;
-wire        commit;
-wire [31:0] commit_pc;
-wire [31:0] commit_pre_pc;
+// wire [31:0] cur_pc ;
+// bit         commit ;
+// wire [31:0] commit_pc ;
+// wire [31:0] commit_pre_pc;
 
+// import "DPI-C" function  void get_difftest(input int diff_cur_pc,input  bit diff_commit,input int diff_commit_pc, input int diff_commit_pre_pc , input int diff_instr);
+// initial begin
+//     get_difftest(cur_pc, commit, commit_pc, commit_pre_pc, instr);
+// end
 
 // output declaration of module rst
 wire rst_o_reset;
@@ -543,11 +547,11 @@ write_back u_write_back(
     .write_back_o_wb_valD    	(write_back_o_wb_valD       )
 );
 
-assign cur_pc = regF_o_pc;
-assign commit = regW_o_commit;
-assign commit_pc = regW_o_pc;
-assign commit_pre_pc=regW_o_pre_pc;
-
+assign cur_pc        = regF_o_pc;
+assign commit        = regW_o_commit;
+assign commit_pc     = regW_o_pc;
+assign commit_pre_pc = regW_o_pre_pc;
+assign instr         = regW_o_instr;
 
 
 // output declaration of module ctrl

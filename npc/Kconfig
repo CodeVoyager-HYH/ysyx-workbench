@@ -280,7 +280,7 @@ config SRAM
   
 config SRAM_BOUND
   hex
-  default 0x0fffffff 
+  default 0x0f001fff
 
   #UART
 config UART

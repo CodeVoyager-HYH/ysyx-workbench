@@ -15,6 +15,7 @@
 
 #include <memory/host.h>
 #include <memory/paddr.h>
+#include <memory/soc.h>
 #include <device/mmio.h>
 #include <isa.h>
 
@@ -29,7 +30,7 @@ paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
 static word_t pmem_read(paddr_t addr, int len) {
   word_t ret = host_read(guest_to_host(addr), len);
-  return ret;
+    return ret;
 }
 
 static void pmem_write(paddr_t addr, int len, word_t data) {
@@ -49,6 +50,7 @@ void init_mem() {
   IFDEF(CONFIG_MEM_RANDOM, memset(pmem, rand(), CONFIG_MSIZE));
   Log("physical memory area [" FMT_PADDR ", " FMT_PADDR "]", PMEM_LEFT, PMEM_RIGHT);
   printf("physical memory area [" FMT_PADDR ", " FMT_PADDR "]\n", PMEM_LEFT, PMEM_RIGHT);
+  init_soc();
 }
 
 word_t paddr_read(paddr_t addr, int len) {
@@ -56,10 +58,8 @@ word_t paddr_read(paddr_t addr, int len) {
   Log("(nemu)read address = " FMT_PADDR " at pc = " FMT_WORD " with byte = %d",addr, cpu.pc, len);	
   Log("(nemu)read data = %x \n",pmem_read(addr, len));
 #endif  
-//printf("raddr = %x\n",addr);
-// uint32_t tem = pmem_read(0x80000418,4);
-//   Log("++++++++++++++++++++++++++++=nemu  0x800189c4 = 0x%x",tem);  
-  if (likely(in_pmem(addr))) return pmem_read(addr, len);
+  if (in_socMem(addr)) return soc_paddr_read(addr, len);
+  else if (likely(in_pmem(addr))) return pmem_read(addr, len);
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
   //out_of_bound(addr);
   return 0;
@@ -71,7 +71,8 @@ void paddr_write(paddr_t addr, int len, word_t data) {
 
   printf("(nemu)write address = " FMT_PADDR " at pc = " FMT_WORD " with byte = %d and data =" FMT_WORD "\n",addr, cpu.pc, len, data);
 #endif  
-  if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
+  if (in_socMem(addr)) {return soc_paddr_write(addr, len, data); return; }
+  else if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
   //out_of_bound(addr);
 }
