@@ -2,6 +2,8 @@
 module regE(
     input  wire clk,
     input  wire rst,
+    input  wire ctrl_i_regE_stall,
+
     input  wire             ctrl_i_regE_bubble,
     input  wire [31:0]      decode_i_valA,
     input  wire [31:0]      decode_i_valB,
@@ -20,10 +22,6 @@ module regE(
     input  wire             decode_i_is_ecall,
     input  wire [2:0]       decode_i_wb_csr_sel,
 
-    //soc
-    input  wire             regD_i_io_master_awready,
-    input  wire             regD_i_io_master_wready,
-    input  wire             regD_i_io_master_bvalid,
     //commit
     input  wire [31:0]      regD_i_instr,
     input  wire [31:0]      regD_i_pc,
@@ -49,10 +47,6 @@ module regE(
 	output reg [1:0]        regE_o_wb_valD_sel,
     output reg              regE_o_need_jump,
 
-    //soc
-    output reg              regE_o_io_master_awready,
-    output reg              regE_o_io_master_wready,
-    output reg              regE_o_io_master_bvalid,
     //commit
     output reg    [31:0]    regE_o_pc,
     output reg              regE_o_commit,
@@ -88,7 +82,7 @@ always @(posedge clk) begin
         regE_o_is_mret      <= 1'b0;
         regE_o_is_ecall     <= 1'b0;
     end
-    else begin
+    else if(~ctrl_i_regE_stall)begin
         //execute
         regE_o_valA         <= decode_i_valA;
         regE_o_valB         <= decode_i_valB;
@@ -104,10 +98,6 @@ always @(posedge clk) begin
         regE_o_wb_csr_rd    <= decode_i_wb_csr_rd;
         regE_o_wb_valD_sel  <= decode_i_wb_valD_sel;
         regE_o_wb_csr_sel   <= decode_i_wb_csr_sel;
-        //soc
-        regE_o_io_master_awready <= regD_i_io_master_awready;
-        regE_o_io_master_wready  <= regD_i_io_master_wready;
-        regE_o_io_master_bvalid  <= regD_i_io_master_bvalid;
         
         regE_o_need_jump    <= decode_i_need_jump;
         regE_o_is_jalr      <= decode_i_is_jalr;

@@ -6,8 +6,26 @@
 
 static uint8_t *mrom = NULL;
 static uint8_t *sram = NULL;
+static uint8_t *flash = NULL;
 
-uint8_t* soc_guest_to_host(paddr_t paddr) { return mrom + paddr - MROM_LEFT;}
+uint8_t* soc_guest_to_host(paddr_t paddr){
+  if(paddr >= MROM_LEFT && paddr <= 0x20000fff) {
+    return mrom + paddr - MROM_LEFT;
+  } 
+  else if (paddr >= 0x30000000 && paddr <= 0x3fffffff) {
+    return flash + paddr - 0x30000000;
+  } 
+  else if (paddr >= SRAM_LEFT && paddr <= 0x0f001fff){
+    return sram + paddr - SRAM_LEFT;
+  }
+  // else if(paddr >= 0x80000000 && paddr <= 0x9fffffff){
+  //   return pmem + paddr - 0x80000000;
+  // } 
+  else {
+    printf("Invalid Address: 0x%0x\n", paddr);
+    assert(0);
+  }
+}
 
 bool in_mrom (paddr_t addr){
     if(addr >= MROM_LEFT && addr <= MROM_RIGHT) return true;
@@ -24,34 +42,19 @@ bool in_socMem(paddr_t addr){
 }
 
 paddr_t soc_paddr_read(paddr_t addr, int len){
-    IFDEF(CONFIG_MTRACE, Log("(soc_paddr_read)read address = " FMT_PADDR " at pc = " FMT_WORD " with byte = %d",addr, cpu.pc, len));
+   
+    //IFDEF(CONFIG_MTRACE, Log("(soc_paddr_read)read address = " FMT_PADDR " at pc = " FMT_WORD " with byte = %d",addr, cpu.pc, len));
     word_t ret = 0;
-    if(in_mrom(addr)){
-        ret = host_read(mrom + addr - MROM_LEFT, len);
-    } 
-    else if(in_sram(addr)){
-        host_read(sram + addr - SRAM_LEFT, len);
-    } 
-    else {
-        Log("address = " FMT_PADDR " is out of bound of mrom [" FMT_PADDR ", " FMT_PADDR "] at pc = " FMT_WORD,
-            addr, MROM_LEFT, MROM_RIGHT, cpu.pc);
-    }
+    ret = host_read(soc_guest_to_host(addr), len);
+    //Log("(soc_paddr_read)read address = " FMT_PADDR " at pc = " FMT_WORD ",data = %x"" with byte = %d",addr, cpu.pc,ret, len);
+
     return ret;
 }
 
 void soc_paddr_write(paddr_t addr, int len, word_t data){
-    IFDEF(CONFIG_MTRACE, Log("(soc_paddr_write)write address = " FMT_PADDR " at pc = " FMT_WORD " with byte = %d and data =" FMT_WORD "\n",addr, cpu.pc, len, data));
-    if(in_mrom(addr)){
-        host_write(mrom + addr - MROM_LEFT, len, data);
-    } 
-    else if(in_sram(addr)){
-        host_write(sram + addr - SRAM_LEFT, len, data);
-    } 
-    else {
-        Log("address = " FMT_PADDR " is out of bound of soc [" FMT_PADDR ", " FMT_PADDR "] at pc = " FMT_WORD,
-            addr, MROM_LEFT, MROM_RIGHT, cpu.pc);
-        assert(0);
-    }
+   Log("(soc_paddr_write)write address = " FMT_PADDR " at pc = " FMT_WORD " with byte = %d and data =" FMT_WORD "\n",addr, cpu.pc, len, data);  
+  IFDEF(CONFIG_MTRACE, Log("(soc_paddr_write)write address = " FMT_PADDR " at pc = " FMT_WORD " with byte = %d and data =" FMT_WORD "\n",addr, cpu.pc, len, data));
+    host_write(soc_guest_to_host(addr), len, data);
 }
 
 void init_soc() {

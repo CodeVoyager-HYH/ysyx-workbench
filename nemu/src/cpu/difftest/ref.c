@@ -23,7 +23,7 @@
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
 	
 	if(direction == DIFFTEST_TO_REF) {
-		memcpy(guest_to_host(addr), buf, n);
+		memcpy(soc_guest_to_host(addr), buf, n);
 	}
 	else {
 		assert(0);
@@ -71,11 +71,20 @@ __EXPORT void difftest_raise_intr(word_t NO) {
   assert(0);
 }
 
+static const uint32_t mrom [] = {
+  0x00a00513,
+  0x00100073,
+};
+
 __EXPORT void difftest_init(int port) {
   init_soc();	
   void init_mem();
   init_mem();
   /* Perform ISA dependent initialization. */
-  init_isa();
-  
+  //init_isa();
+  memcpy(soc_guest_to_host(0x20000000), mrom, sizeof(mrom));
+
+  /* Initialize this virtual computer system. */
+  //restart();
+  cpu.pc = 0x20000000;
 }

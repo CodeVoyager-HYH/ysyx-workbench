@@ -30,7 +30,7 @@ void difftest_skip_dut(int nr_ref, int nr_dut) {
   }
 }
 
-void init_difftest(char *ref_so_file, long img_size, int port) {
+void init_difftest(char *ref_so_file, long img_size,long mrom_size, int port) {
   assert(ref_so_file != NULL);
   void *handle;
   handle = dlopen(ref_so_file, RTLD_LAZY);
@@ -52,11 +52,10 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   assert(ref_difftest_init);
 
   ref_difftest_init(port); //do nothing
-  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
+  //ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
+  ref_difftest_memcpy(CONFIG_MROM, guest_to_host(CONFIG_MROM), img_size, DIFFTEST_TO_REF);
   //MROM
-  extern   long mrom_size ;
-  extern uint8_t* guest_to_mrom(paddr_t paddr);
-  ref_difftest_memcpy(CONFIG_MROM+RESET_VECTOR, guest_to_mrom(CONFIG_MROM), mrom_size, DIFFTEST_TO_REF);
+
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);  //cpu-->REF
 
   Log("Differential testing: %s", ANSI_FMT("ON", ANSI_FG_GREEN));
@@ -86,6 +85,7 @@ static void checkregs(CPU_state *ref, vaddr_t pc, paddr_t next_pc) {
       for(int i = 0;  i < 32; ++i){
         printf("[参考处理器.%-3s]=0x%-8x, [你的处理器.%-3s]=0x%-8x\n", reg_name(i), ref->gpr[i], reg_name(i), gpr(i));
       }
+      printf("[参考处理器.pc ]=0x%-8x, [你的处理器.pc ]=0x%-8x\n",  ref->pc, pc);
       for(int i = 3; i > 0; i--)
         npc_single_cycle();
       npc_close_simulation();
@@ -100,6 +100,7 @@ static void checkregs(CPU_state *ref, vaddr_t pc, paddr_t next_pc) {
       for(int i = 0;  i < 32; ++i){
         printf("[参考处理器.%-3s]=0x%-8x, [你的处理器.%-3s]=0x%-8x\n", reg_name(i), ref->gpr[i], reg_name(i), gpr(i));
       }  
+      printf("[参考处理器.pc ]=0x%-8x, [你的处理器.pc ]=0x%-8x\n",  ref->pc, pc);
       for(int i = 3; i > 0; i--)
         npc_single_cycle();  
       npc_close_simulation();
@@ -139,10 +140,9 @@ void difftest_step(vaddr_t pc, vaddr_t next_pc) {
   CPU_state ref_r;
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT); //把REF的内容
-  printf("pc = %x, next_pc = %x\n",pc,next_pc);
   checkregs(&ref_r, pc, next_pc);
 }
 
 #else
-void init_difftest(char *ref_so_file, long img_size, int port) { }
+void init_difftest(char *ref_so_file, long img_size,long mrom_size, int port) { }
 #endif

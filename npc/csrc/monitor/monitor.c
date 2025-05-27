@@ -37,9 +37,12 @@ static long load_img() {
   Log("The image is %s, size = %ld", img_file, size);
 
   fseek(fp, 0, SEEK_SET);
+  #ifdef CONFIG_SOC
+  int ret = fread(guest_to_host(CONFIG_MROM), size, 1, fp);
+  #else
   int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
   assert(ret == 1);
-
+  #endif
   fclose(fp);
   return size;
 }
@@ -90,33 +93,42 @@ static const uint32_t img [] = {
 };
 //------------------------------------------mrom img--------------------------------------
 static const uint32_t mrom_img [] = {  
+  0x00000413,
+  0xef000117, //x2 == 0x0f000004
+  0x00000097, //x1 == 0x20000008
+  0x00112023, //0x0f000004写入0x20000008
+  0x00000413,
+  0x00000413,
+  0x00000413,
+  0x00012183, //x3读出地址0x0f000004
+  0x00000413,
   0x00100073, //ebreak
 };
 
-extern uint8_t* guest_to_mrom(paddr_t paddr);
 void load_builded_img_and_mrom(){
  memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
- memcpy(guest_to_mrom(CONFIG_MROM), mrom_img, sizeof(mrom_img));
+ IFDEF(CONFIG_SOC,memcpy(guest_to_host(CONFIG_MROM), mrom_img, sizeof(mrom_img)));
+ Log("finish load build");
 }
 
-static long load_mrom() {
-  if (mrom_file == NULL) {
-    Log("No mrom-image is given. Use the default build-in mrom.");
-    return 0;
-  }
-  FILE *fp = fopen(mrom_file, "rb");
-  Assert(fp, "Can not open '%s'", mrom_file);
-  fseek(fp, 0, SEEK_END);
-  long size = ftell(fp);
-  Log("The image is %s, size = %ld", mrom_file, size);
+// static long load_mrom() {
+//   if (mrom_file == NULL) {
+//     Log("No mrom-image is given. Use the default build-in mrom.");
+//     return 0;
+//   }
+//   FILE *fp = fopen(mrom_file, "rb");
+//   Assert(fp, "Can not open '%s'", mrom_file);
+//   fseek(fp, 0, SEEK_END);
+//   long size = ftell(fp);
+//   Log("The image is %s, size = %ld", mrom_file, size);
 
-  fseek(fp, 0, SEEK_SET);
-  int ret = fread(guest_to_mrom(CONFIG_MROM), size, 1, fp);
-  assert(ret == 1);
+//   fseek(fp, 0, SEEK_SET);
+//   int ret = fread(guest_to_host(CONFIG_MROM), size, 1, fp);
+//   assert(ret == 1);
 
-  fclose(fp);
-  return size;
-}
+//   fclose(fp);
+//   return size;
+// }
 
 //--------------------------------------------------------------------------------------
 long mrom_size = 0;
@@ -127,10 +139,10 @@ void init_monitor(int argc, char **argv){
   init_mem();
   load_builded_img_and_mrom();
   long img_size = load_img();
-  mrom_size = load_mrom();
+  mrom_size = img_size;
   npc_init();
-  init_difftest(diff_so_file,img_size, difftest_port);
-//  init_trace();
+  init_difftest(diff_so_file,img_size, mrom_size, difftest_port);
+  // init_trace();
   init_sdb();
   init_disasm("riscv32-pc-linux-gnu");
   welcome();

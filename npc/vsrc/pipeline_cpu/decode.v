@@ -14,13 +14,15 @@ module decode(
 
 	//访存阶段数据前递
 	input  wire	[31:0]	regM_i_valE,
-	input  wire [31:0]	memory_i_valM,
+	// input  wire [31:0]	memory_i_valM,
+	input  wire [31:0]	axi4_mem_i_io_master_rdata,
 	input  wire [1:0]	regM_i_wb_valD_sel,
 	input  wire [4:0] 	regM_i_wb_rd,
 	input  wire 		regM_i_wb_reg_wen,
 
 	//执行阶段数据前递
 	input  wire [11:0]  regE_i_wb_csr_rd,
+	input  wire [3:0]	regM_i_mem_rw,
 	input  wire 		regE_i_wb_reg_wen,
 	input  wire [4:0]	regE_i_wb_rd,
 	input  wire [31:0]	execute_i_valE,
@@ -289,22 +291,26 @@ assign decode_o_rs2 = (rv32I_I_csrrs ) ? rv32I_csr_rd :
 					  (opcode_I_TYPE | opcode_U_TYPE | opcode_J_TYPE) ? 12'd0:
 					  (opcode_B_TYPE | opcode_S_TYPE | opcode_R_TYPE) ? {7'b0,rv32I_rs2} : 12'd0;
 
+wire soc = (regW_i_valE >= `SRAM && regW_i_valE <= `SRAM_BOUND);
+wire is_load_instr = (regM_i_mem_rw == `mem_rw_lw); 
+assign 	decode_o_valA =  //(is_load_instr && decode_o_rs1 == regM_i_wb_rd && regM_i_wb_rd != 5'd0) ? axi4_mem_i_io_master_rdata : 
+						 (decode_o_rs1  == regE_i_wb_rd && regE_i_wb_rd != 5'd0 && regE_i_wb_reg_wen && !is_load_instr) ? execute_i_valE : 
+						 (decode_o_rs1  == regM_i_wb_rd && regM_i_wb_rd != 5'd0 && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valM) ? axi4_mem_i_io_master_rdata 		: 
+						 (decode_o_rs1  == regM_i_wb_rd && regM_i_wb_rd != 5'd0 && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valE) ? regM_i_valE 						: 
+						 (decode_o_rs1  == regW_i_wb_rd && regW_i_wb_rd != 5'd0 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valE) ? regW_i_valE  					: 
+						 (decode_o_rs1  == regW_i_wb_rd && regW_i_wb_rd != 5'd0 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valM && soc) ? write_back_i_wb_valD		: 
+						 (decode_o_rs1  == regW_i_wb_rd && regW_i_wb_rd != 5'd0 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valM) ? regW_i_valM  					: 
+						 (decode_o_rs1  == regW_i_wb_rd && regW_i_wb_rd != 5'd0 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valP) ? regW_i_pc + 32'd4   				: regfile_o_valA; 
 
-assign 	decode_o_valA =  (decode_o_rs1  == regE_i_wb_rd && regE_i_wb_rd != 5'd0 && regE_i_wb_reg_wen) ? execute_i_valE : 
-						 (decode_o_rs1  == regM_i_wb_rd && regM_i_wb_rd != 5'd0 && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valM) ? memory_i_valM 		: 
-						 (decode_o_rs1  == regM_i_wb_rd && regM_i_wb_rd != 5'd0 && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valE) ? regM_i_valE 			: 
-						 (decode_o_rs1  == regW_i_wb_rd && regW_i_wb_rd != 5'd0 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valE) ? regW_i_valE  		: 
-						 (decode_o_rs1  == regW_i_wb_rd && regW_i_wb_rd != 5'd0 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valM) ? regW_i_valM  		: 
-						 (decode_o_rs1  == regW_i_wb_rd && regW_i_wb_rd != 5'd0 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valP) ? regW_i_pc + 32'd4   : regfile_o_valA; 
 
-
-assign  decode_o_valB =  (decode_o_rs2[4:0]  == regE_i_wb_rd 	&& regE_i_wb_rd 	!= 5'd0  && regE_i_wb_reg_wen) ? execute_i_valE : 
-						 (decode_o_rs2  	 == regE_i_wb_csr_rd&& regE_i_wb_csr_rd != 12'd0 && regE_i_wb_reg_wen) ? execute_i_valE : 
-						 (decode_o_rs2[4:0]  == regM_i_wb_rd 	&& regM_i_wb_rd 	!= 5'd0  && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valM) ? memory_i_valM : 
-						 (decode_o_rs2[4:0]  == regM_i_wb_rd 	&& regM_i_wb_rd 	!= 5'd0  && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valE) ? regM_i_valE  :
-						 (decode_o_rs2[4:0]  == regW_i_wb_rd 	&& regW_i_wb_rd 	!= 5'd0	 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valE) ? regW_i_valE  : 
-						 (decode_o_rs2[4:0]  == regW_i_wb_rd 	&& regW_i_wb_rd 	!= 5'd0	 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valM) ? regW_i_valM  : 
-						 (decode_o_rs2[4:0]  == regW_i_wb_rd 	&& regW_i_wb_rd 	!= 5'd0  && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valP) ? regW_i_pc + 32'd4   : regfile_o_valB; 
+assign  decode_o_valB =  (decode_o_rs2[4:0]  == regE_i_wb_rd 	&& regE_i_wb_rd 	!= 5'd0  && regE_i_wb_reg_wen && !is_load_instr) ? execute_i_valE : 
+						 (decode_o_rs2  	 == regE_i_wb_csr_rd&& regE_i_wb_csr_rd != 12'd0 && regE_i_wb_reg_wen && !is_load_instr) ? execute_i_valE : 
+						 (decode_o_rs2[4:0]  == regM_i_wb_rd 	&& regM_i_wb_rd 	!= 5'd0  && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valM) ? axi4_mem_i_io_master_rdata  : 
+						 (decode_o_rs2[4:0]  == regM_i_wb_rd 	&& regM_i_wb_rd 	!= 5'd0  && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valE) ? regM_i_valE  				:
+						 (decode_o_rs2[4:0]  == regW_i_wb_rd 	&& regW_i_wb_rd 	!= 5'd0	 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valE) ? regW_i_valE  				: 
+						 (decode_o_rs2[4:0]  == regW_i_wb_rd 	&& regW_i_wb_rd 	!= 5'd0	 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valM && soc) ? write_back_i_wb_valD : 
+						 (decode_o_rs2[4:0]  == regW_i_wb_rd 	&& regW_i_wb_rd 	!= 5'd0	 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valM) ? regW_i_valM  				: 
+						 (decode_o_rs2[4:0]  == regW_i_wb_rd 	&& regW_i_wb_rd 	!= 5'd0  && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valP) ? regW_i_pc + 32'd4   		: regfile_o_valB; 
 
 
 assign decode_o_imm     		= 	(rv32I_I_csrrs | rv32I_I_csrrw) ?  regfile_o_valB :

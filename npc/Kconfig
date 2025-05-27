@@ -393,5 +393,7 @@ config PIPELINE
     bool "pipeline-core processor"
     default y
    
-    
+config SOC
+    bool "enable soc"
+    default y    
 endmenu

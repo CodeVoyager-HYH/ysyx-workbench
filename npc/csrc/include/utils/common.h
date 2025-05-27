@@ -1,7 +1,6 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 #include <macro.h>
-// #include <autoconf.h>
 #include <sim_difftest.h>
 //C-Standard-File
 #include <stdint.h>
@@ -9,6 +8,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+//Kconfig
 #include <autoconf.h>
 //Verilog
 #include "verilated_dpi.h"
@@ -28,6 +28,7 @@ typedef word_t   paddr_t;
 #define FMT_PADDR "0x%08" PRIx32
 
 //memory
+
 #define PMEM_LEFT  ((paddr_t)CONFIG_MBASE)
 #define PMEM_RIGHT ((paddr_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)

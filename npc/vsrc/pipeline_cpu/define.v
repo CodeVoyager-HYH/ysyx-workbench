@@ -55,10 +55,11 @@
 
 
 //soc ADDR
-`define MROM                32'h20000000
-`define MROM_BOUND          32'h20000fff
-`define UART                32'h10000000
-`define UART_BOUND          32'h10000fff
-
+`define MROM                32'h2000_0000
+`define MROM_BOUND          32'h2000_0fff
+`define UART                32'h1000_0000
+`define UART_BOUND          32'h1000_0fff
+`define SRAM                32'h0f00_0000
+`define SRAM_BOUND          32'h0f00_1fff
 //reset
 `define RESET_PC            32'h8000_0000

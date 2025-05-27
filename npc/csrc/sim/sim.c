@@ -56,6 +56,7 @@ void update_cpu_state(){
   cpu.csr[MCAUSE] = cpu_mcause;
   cpu.csr[MTVEC] =  cpu_mtvec;
 }
+
 void npc_single_cycle() {
   dut.clock = 0;  dut.eval();   
   IFDEF(CONFIG_NPC_OPEN_SIM,   m_trace->dump(sim_time++));
@@ -74,19 +75,13 @@ void npc_reset(int n) {
 void npc_init() {
   IFDEF(CONFIG_NPC_OPEN_SIM, npc_open_simulation());  
   npc_reset(1);
-  // if(cpu.pc != 0x80000000 && (cpu.pc <= 0x20000000 && cpu.pc >=0x20000fff)){
-  //   npc_close_simulation();
-  //   Assert(cpu.pc== 0x80000000, "npc初始化之后, cpu.pc的值应该为0x80000000");
-  // }
 }
 
 
 word_t commit_pre_pc = 0; 
-//si 1执行一条指令就确定是一次commit, 而不是多次clk
 void execute(uint64_t n){
   for (   ;n > 0; n --) {
     if (sim_state.state != SIM_RUNNING) {
-      //if(sim_state.state == SIM_END) printf("下一条要执行的指令是----![信息待添加]\n");
       break; 
     }
     while(dut.commit != 1){

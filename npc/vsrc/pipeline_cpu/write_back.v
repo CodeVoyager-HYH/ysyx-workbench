@@ -7,6 +7,8 @@ module write_back(
     input wire [2:0]    regW_i_wb_csr_sel,
     input wire [31:0]   regW_i_valM,
 
+    input wire [31:0]   axi4_mem_i_io_master_rdata,
+
     input wire [31:0]   regW_i_pc,
     input wire [31:0]   regW_i_valE,
     input wire [31:0]   regW_i_instr,
@@ -32,6 +34,7 @@ assign write_back_o_wb_reg_wen = regW_i_wb_reg_wen;
 assign write_back_o_wb_csr_sel = regW_i_wb_csr_sel;
 assign write_back_o_wb_valD    = (regW_i_wb_valD_sel  == `wb_valD_sel_valE ) ? regW_i_valE : 
                                  (regW_i_wb_valD_sel  == `wb_valD_sel_valP ) ? regW_i_pc + 32'd4 :
+                                 (axi4_mem_i_io_master_rdata != 32'b0) ? axi4_mem_i_io_master_rdata :
                                  (regW_i_wb_valD_sel  == `wb_valD_sel_valM ) ? regW_i_valM : 32'd0;
 
 

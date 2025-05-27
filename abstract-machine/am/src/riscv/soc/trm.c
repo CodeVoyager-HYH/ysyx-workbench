@@ -13,16 +13,15 @@
   可通过ysyxSoC中的UART16550进行输出
 */
 
-#define soc_ebreak(code) asm volatile("mv a0, %0; ebreak" : :"r"(code))
-extern char _sram_start;
-extern char _heap_start;
+extern char _heap_start,_heap_end;
 int main(const char *args);
 
 extern char _pmem_start;
 #define PMEM_SIZE (128 * 1024 * 1024)
 #define PMEM_END  ((uintptr_t)&_pmem_start + PMEM_SIZE)
+#define npc_trap(code) asm volatile("mv a0, %0; ebreak" : :"r"(code))
 
-Area heap = RANGE(&_heap_start, PMEM_END);
+Area heap = RANGE(&_heap_start, &_heap_end);
 static const char mainargs[MAINARGS_MAX_LEN] = MAINARGS_PLACEHOLDER; // defined in CFLAGS
 
 void putch(char ch) {
@@ -30,7 +29,7 @@ void putch(char ch) {
 }
 
 void halt(int code) {
-  soc_ebreak(code);
+  npc_trap(code);
   while (1);
 }
 

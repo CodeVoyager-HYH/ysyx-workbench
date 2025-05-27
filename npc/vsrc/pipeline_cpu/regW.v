@@ -2,6 +2,7 @@
 module regW(
     input wire clk,
     input wire rst,
+    input wire ctrl_i_regW_stall,
     //regM直接传过来的信号
     input wire          regM_i_wb_reg_wen,
     input wire [4:0]    regM_i_wb_rd,
@@ -9,6 +10,10 @@ module regW(
     input wire [2:0]    regM_i_wb_csr_sel,    
     input wire [1:0]    regM_i_wb_valD_sel,
     input wire [31:0]   regM_i_valE,
+
+
+input wire [3:0]    regM_o_mem_rw,
+output reg [3:0]    regW_o_mem_rw,
 
     input wire [31:0]   memory_i_valM,
 
@@ -43,7 +48,7 @@ always @(posedge clk)begin
         regW_o_commit       <= 1'd0;
         regW_o_valM         <= 32'd0;
     end
-    else begin
+    else if(~ctrl_i_regW_stall) begin
         regW_o_wb_reg_wen   <= regM_i_wb_reg_wen;
         regW_o_wb_rd        <= regM_i_wb_rd;
         regW_o_wb_csr_rd    <= regM_i_wb_csr_rd;
@@ -56,6 +61,9 @@ always @(posedge clk)begin
         regW_o_instr        <= regM_i_instr;
         regW_o_commit       <= regM_i_commit;
         regW_o_pre_pc       <= regM_i_pre_pc;
+
+
+        regW_o_mem_rw   <= regM_o_mem_rw;
     end
 end
 

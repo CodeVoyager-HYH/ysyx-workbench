@@ -30,7 +30,7 @@ int 	check_csr_idx(int idx);
 void 		init_monitor(int , char **);
 
 void 		init_log(const char *log_file);
-void 		init_difftest(char *ref_so_file, long img_size, int port);
+void 		init_difftest(char *ref_so_file, long img_size,long mrom_size, int port);
 void 		init_sdb();
 void 		init_disasm(const char *triple);
 void 		init_trace();

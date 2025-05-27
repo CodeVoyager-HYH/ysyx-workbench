@@ -35,9 +35,10 @@ extern "C" void mrom_read(int32_t addr, int32_t *data)  {
 }
 
 extern "C" int dpi_mem_read(int addr, int len, int instr){
-
-	IFDEF(CONFIG_MTRACE,Log("[pmem_read] addr = 0x%x,instr = %x",addr,clk_count));	
-	if(addr == 0) return 0;
+	//地址对对齐	
+	addr = addr & ~0x3u;
+	
+	// IFDEF(CONFIG_MTRACE,Log("[pmem_read] addr = 0x%x,instr = %x",addr,clk_count));	
 	if(addr >=  CONFIG_RTC_MMIO && addr <= CONFIG_RTC_MMIO + 4){
 		long time = get_time();
 		if(addr == CONFIG_RTC_MMIO) {
@@ -48,21 +49,20 @@ extern "C" int dpi_mem_read(int addr, int len, int instr){
 		}
 	}else if(addr >= 0x80000000 && addr <= 0x8fffffff){
 		unsigned int data = pmem_read(addr, len);
+		IFDEF(CONFIG_MTRACE,Log("[pmem_read] addr = 0x%x,instr = %x， data = %x",addr,clk_count, data));	
 		return data;
-	}else{
+	}else if(addr >= CONFIG_MROM && addr <= CONFIG_MROM_BOUND){
+		IFDEF(CONFIG_MTRACE,Log("[pmem_read] addr = 0x%x,instr = %x， data = %x",addr,clk_count,  pmem_read(addr,4)));	
+		return pmem_read(addr,4);
+	}
+	else{
 		return 0;
-		Log("[read]你将要访问的内存地址是0x%x, instr = 0x%x,  不属于内存地址[0x80000000, 0x8ffffffff], 程序即将出错退出\n", addr,instr);
-		IFDEF(CONFIG_MTRACE,Log("[read]你将要访问的内存地址是0x%x, 不属于内存地址[0x80000000, 0x8ffffffff], 程序即将出错退出\n", addr));
-		printf("NUM\tHEX\n");
-		for(int i = 0;i < 32; i++){
-			printf("x[%d]\t%-8x\n",i,reg_ptr[i]);
-		}
-		IFDEF(CONFIG_MTRACE,Log("[read]你将要访问的内存地址是0x%x, 指令是:0x%x, 不属于内存地址[0x80000000, 0x8ffffffff], 程序即将出错退出\n", addr,instr));
-		npc_close_simulation();
-		exit(1);
 	}
 }
 extern "C" void dpi_mem_write(int addr, int data, int len,int instr){
+	//地址对对齐	
+	addr = addr & ~0x3u;
+		
 	if(addr == CONFIG_SERIAL_MMIO){
 		char ch = data;
 		printf("%c", ch);
@@ -71,12 +71,7 @@ extern "C" void dpi_mem_write(int addr, int data, int len,int instr){
 	}else if(addr >= 0x80000000 && addr <= 0x8fffffff){
 		pmem_write(addr, len, data);
 	}
-	// else{
-	// 	Log("[wirte]你将要访问的内存地址是0x%x, instr = 0x%x,不属于内存地址[0x80000000, 0x8ffffffff], 程序即将出错退出\n", addr,instr);
-	// 	IFDEF(CONFIG_MTRACE,Log("[wirte]你将要访问的内存地址是0x%x, 不属于内存地址[0x80000000, 0x8ffffffff], 程序即将出错退出\n", addr));
-	// 	npc_close_simulation();
-	// 	exit(1);
-	// }
+
 }
 
 extern "C" void dpi_read_regfile(const svOpenArrayHandle r) {

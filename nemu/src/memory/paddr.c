@@ -54,6 +54,7 @@ void init_mem() {
 }
 
 word_t paddr_read(paddr_t addr, int len) {
+  addr = addr & ~0x3u;
 #ifdef CONFIG_MTRACE	
   Log("(nemu)read address = " FMT_PADDR " at pc = " FMT_WORD " with byte = %d",addr, cpu.pc, len);	
   Log("(nemu)read data = %x \n",pmem_read(addr, len));
@@ -66,7 +67,7 @@ word_t paddr_read(paddr_t addr, int len) {
 }
 
 void paddr_write(paddr_t addr, int len, word_t data) {
-
+  addr = addr & ~0x3u;
 #ifdef CONFIG_MTRACE	
 
   printf("(nemu)write address = " FMT_PADDR " at pc = " FMT_WORD " with byte = %d and data =" FMT_WORD "\n",addr, cpu.pc, len, data);

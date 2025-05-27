@@ -2,6 +2,7 @@
 module regM(
     input wire clk,
     input wire rst,
+    input wire ctrl_i_regM_stall,
     
     //execute阶段传来的信号
     input wire [31:0]   execute_i_valE,
@@ -20,12 +21,7 @@ module regM(
     input wire [31:0]   regE_i_instr,
     input wire [31:0]   regE_i_pc,
     input wire          regE_i_commit,
-
-    //soc   
-    input wire          regE_i_io_master_awready,
-    input wire          regE_i_io_master_wready,
-    input wire          regE_i_io_master_bvalid,
-
+    
     output reg [31:0]   regM_o_valE,
     output reg [31:0]   regM_o_valB,
     output reg [3:0]    regM_o_mem_rw,
@@ -34,10 +30,6 @@ module regM(
     output reg [11:0]   regM_o_wb_csr_rd,
     output reg [1:0]    regM_o_wb_valD_sel,
     output reg [2:0]    regM_o_wb_csr_sel,
-    
-    output wire         regM_o_io_master_awready,
-    output wire         regM_o_io_master_wready,
-    output wire         regM_o_io_master_bvalid,
 
     //commit for simulator
     output reg [31:0]   regM_o_instr,
@@ -60,7 +52,7 @@ always @(posedge clk) begin
         regM_o_commit       <= 1'd0;
         regM_o_pre_pc       <= 32'd0;
     end
-    else begin 
+    else if(~ctrl_i_regM_stall)begin
         regM_o_valE         <= execute_i_valE;
         regM_o_mem_rw       <= regE_i_mem_rw;
         regM_o_wb_reg_wen   <= regE_i_wb_reg_wen;
@@ -71,9 +63,9 @@ always @(posedge clk) begin
         regM_o_valB         <= regE_i_valB;
 
         //soc
-        regM_o_io_master_awready <= regE_i_io_master_awready;
-        regM_o_io_master_wready  <= regE_i_io_master_wready;
-        regM_o_io_master_bvalid  <= regE_i_io_master_bvalid;
+        // regM_o_io_master_awready <= regE_i_io_master_awready;
+        // regM_o_io_master_wready  <= regE_i_io_master_wready;
+        // regM_o_io_master_bvalid  <= regE_i_io_master_bvalid;
         
         //commit for simulator
         regM_o_instr        <= regE_i_instr;

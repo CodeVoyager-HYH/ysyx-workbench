@@ -3,6 +3,7 @@ AM_SRCS := riscv/soc/start.S \
            riscv/soc/ioe.c \
            riscv/soc/timer.c \
            riscv/soc/input.c \
+		   riscv/soc/bootloader.c \
            riscv/soc/cte.c \
            riscv/soc/trap.S \
            platform/dummy/vme.c \
@@ -17,7 +18,7 @@ LDFLAGS += --gc-sections -e _start
 SOCFLAGS += -b -l  $(shell dirname $(IMAGE).elf)/ins.txt 
 SOCFLAGS += -e $(IMAGE).elf
 SOCFLAGS += -d $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
-SOCFLAGS += --mrom=$(IMAGE).bin
+# SOCFLAGS += --mrom=$(IMAGE).bin
 
 MAINARGS_MAX_LEN = 64
 MAINARGS_PLACEHOLDER = The insert-arg rule in Makefile will insert mainargs here.

@@ -1,19 +1,32 @@
 [1;34m[/home/hh/ysyx-workbench/npc/csrc/utils/log.c:15 init_log] Log is written to /home/hh/ysyx-workbench/npc/build/npc-log.txt[0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/memory/memory.c:16 init_mem] physical memory area [0x80000000, 0x87ffffff][0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/memory/memory.c:18 init_mem] Mrom memory area [0x20000000, 0x20000fff][0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/memory/memory.c:18 init_mem] physical memory area [0x80000000, 0x87ffffff][0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/memory/memory.c:20 init_mem] Mrom memory area [0x20000000, 0x20000fff][0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:111 load_builded_img_and_mrom] finish load build[0m
 [1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:30 load_img] No image is given. Use the default build-in image.[0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:104 load_mrom] No mrom-image is given. Use the default build-in mrom.[0m
 [1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:37 npc_open_simulation] NPC open simulation[0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/difftest/difftest.c:62 init_difftest] Differential testing: [1;32mON[0m[0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/difftest/difftest.c:63 init_difftest] The result of every instruction will be compared with /home/hh/ysyx-workbench/npc/diff/riscv32-spike-so. This will help you a lot for debugging, but also significantly reduce the performance. If it is not necessary, you can turn it off in menuconfig.[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000000, data = 413[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000000, data = 413[0m
 [1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:7 welcome] Trace and IRingTrace: [1;32mON[0m[0m
 [1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:8 welcome] MemoryTrace:          [1;31mOFF[0m[0m
 [1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:9 welcome] FuncTrace:            [1;31mOFF[0m[0m
 [1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:10 welcome] DeviceTrace:          [1;31mOFF[0m[0m
 [1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:11 welcome] If ITrace and MemoryTrace is enabled, a log file will be generated to record the trace. This may lead to a large log file. If it is not necessary, you can disable it in menuconfig[0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:14 welcome] Build time: 20:07:01, May 16 2025[0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:152 cpu_exec] SIM: [1;32mHIT GOOD TRAP[0m at pc = 0x80000018[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/monitor/monitor.c:14 welcome] Build time: 21:01:05, May 24 2025[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000004, data = ef000117[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000008, data = 97[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x2000000c, data = 112023[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000010, data = 413[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000014, data = 413[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000018, data = 413[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x2000001c, data = 12183[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000020, data = 413[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000024, data = 100073[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000028, data = 47474747[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x2000002c, data = 47474747[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000030, data = 47474747[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/dpi.c:26 mrom_read] [mrom_read]: addr = 0x20000034, data = 47474747[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:146 cpu_exec] SIM: [1;32mHIT GOOD TRAP[0m at pc = 0x20000034[0m
 [1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:42 npc_close_simulation] NPC close simulation[0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:121 statistic] host time spent = 37 us[0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:122 statistic] total guest instructions = 0[0m
-[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:124 statistic] simulation frequency = 0 inst/s[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:115 statistic] host time spent = 120 us[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:116 statistic] total guest instructions = 0[0m
+[1;34m[/home/hh/ysyx-workbench/npc/csrc/sim/sim.c:118 statistic] simulation frequency = 0 inst/s[0m

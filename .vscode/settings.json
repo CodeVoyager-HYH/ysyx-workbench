@@ -23,7 +23,15 @@
         "unordered_map": "c",
         "vector": "c",
         "initializer_list": "c",
-        "optional": "c"
+        "optional": "c",
+        "paddr.h": "c",
+        "soc.h": "c",
+        "vaddr.h": "c",
+        "type_traits": "c",
+        "sim_difftest.h": "c",
+        "am.h": "c",
+        "mmio.h": "c",
+        "stddef.h": "c"
     },
     "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
         "clang-diagnostic-error",

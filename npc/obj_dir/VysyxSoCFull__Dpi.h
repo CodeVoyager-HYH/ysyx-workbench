@@ -16,11 +16,11 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/hh/ysyx-workbench/npc/vsrc/pipeline_cpu/write_back.v:21:30
+    // DPI import at /home/hh/ysyx-workbench/npc/vsrc/pipeline_cpu/write_back.v:23:30
     extern void dpi_ebreak(int pc);
     // DPI import at /home/hh/ysyx-workbench/npc/vsrc/pipeline_cpu/fetch.v:9:30
     extern int dpi_mem_read(int addr, int len, int instr);
-    // DPI import at /home/hh/ysyx-workbench/npc/vsrc/pipeline_cpu/memory.v:24:30
+    // DPI import at /home/hh/ysyx-workbench/npc/vsrc/pipeline_cpu/memory.v:32:30
     extern void dpi_mem_write(int addr, int data, int len, int instr);
     // DPI import at /home/hh/ysyx-workbench/npc/vsrc/pipeline_cpu/regfile.v:21:30
     extern void dpi_read_regfile(const svOpenArrayHandle a);
