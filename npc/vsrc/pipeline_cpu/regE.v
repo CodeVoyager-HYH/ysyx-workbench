@@ -46,7 +46,7 @@ module regE(
     output reg [2:0]        regE_o_wb_csr_sel,
 	output reg [1:0]        regE_o_wb_valD_sel,
     output reg              regE_o_need_jump,
-
+  
     //commit
     output reg    [31:0]    regE_o_pc,
     output reg              regE_o_commit,

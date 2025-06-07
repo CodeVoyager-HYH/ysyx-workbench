@@ -15,7 +15,6 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
-#include <memory/soc.h>
 #include <elf.h>
 
 void init_rand();

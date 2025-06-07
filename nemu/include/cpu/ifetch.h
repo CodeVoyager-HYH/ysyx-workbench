@@ -16,14 +16,9 @@
 #ifndef __CPU_IFETCH_H__
 
 #include <memory/vaddr.h>
-#include <memory/soc.h>
 
 static inline uint32_t inst_fetch(vaddr_t *pc, int len) {
-  #ifdef CONFIG_DIFF
-  uint32_t inst = soc_paddr_read(*pc, len);
-  #else
   uint32_t inst = vaddr_ifetch(*pc, len);
-  #endif
   (*pc) += len;
   return inst;
 }

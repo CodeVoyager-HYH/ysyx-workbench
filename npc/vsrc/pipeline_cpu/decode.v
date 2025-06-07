@@ -294,7 +294,7 @@ assign decode_o_rs2 = (rv32I_I_csrrs ) ? rv32I_csr_rd :
 wire soc = (regW_i_valE >= `SRAM && regW_i_valE <= `SRAM_BOUND);
 wire is_load_instr = (regM_i_mem_rw == `mem_rw_lw); 
 assign 	decode_o_valA =  //(is_load_instr && decode_o_rs1 == regM_i_wb_rd && regM_i_wb_rd != 5'd0) ? axi4_mem_i_io_master_rdata : 
-						 (decode_o_rs1  == regE_i_wb_rd && regE_i_wb_rd != 5'd0 && regE_i_wb_reg_wen && !is_load_instr) ? execute_i_valE : 
+						 (decode_o_rs1  == regE_i_wb_rd && regE_i_wb_rd != 5'd0 && regE_i_wb_reg_wen ) ? execute_i_valE : 
 						 (decode_o_rs1  == regM_i_wb_rd && regM_i_wb_rd != 5'd0 && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valM) ? axi4_mem_i_io_master_rdata 		: 
 						 (decode_o_rs1  == regM_i_wb_rd && regM_i_wb_rd != 5'd0 && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valE) ? regM_i_valE 						: 
 						 (decode_o_rs1  == regW_i_wb_rd && regW_i_wb_rd != 5'd0 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valE) ? regW_i_valE  					: 
@@ -303,8 +303,8 @@ assign 	decode_o_valA =  //(is_load_instr && decode_o_rs1 == regM_i_wb_rd && reg
 						 (decode_o_rs1  == regW_i_wb_rd && regW_i_wb_rd != 5'd0 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valP) ? regW_i_pc + 32'd4   				: regfile_o_valA; 
 
 
-assign  decode_o_valB =  (decode_o_rs2[4:0]  == regE_i_wb_rd 	&& regE_i_wb_rd 	!= 5'd0  && regE_i_wb_reg_wen && !is_load_instr) ? execute_i_valE : 
-						 (decode_o_rs2  	 == regE_i_wb_csr_rd&& regE_i_wb_csr_rd != 12'd0 && regE_i_wb_reg_wen && !is_load_instr) ? execute_i_valE : 
+assign  decode_o_valB =  (decode_o_rs2[4:0]  == regE_i_wb_rd 	&& regE_i_wb_rd 	!= 5'd0  && regE_i_wb_reg_wen ) ? execute_i_valE : 
+						 (decode_o_rs2  	 == regE_i_wb_csr_rd&& regE_i_wb_csr_rd != 12'd0 && regE_i_wb_reg_wen ) ? execute_i_valE : 
 						 (decode_o_rs2[4:0]  == regM_i_wb_rd 	&& regM_i_wb_rd 	!= 5'd0  && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valM) ? axi4_mem_i_io_master_rdata  : 
 						 (decode_o_rs2[4:0]  == regM_i_wb_rd 	&& regM_i_wb_rd 	!= 5'd0  && regM_i_wb_reg_wen && regM_i_wb_valD_sel == `wb_valD_sel_valE) ? regM_i_valE  				:
 						 (decode_o_rs2[4:0]  == regW_i_wb_rd 	&& regW_i_wb_rd 	!= 5'd0	 && regW_i_wb_reg_wen && regW_i_wb_valD_sel == `wb_valD_sel_valE) ? regW_i_valE  				: 
